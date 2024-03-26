@@ -11,6 +11,7 @@ from requests.utils import (
 from urllib3.exceptions import (
     DecodeError, ReadTimeoutError, ProtocolError)
 from urllib.parse import quote
+from security import safe_requests
 
 # config
 # 分支文件使用jsDelivr镜像的开关，0为关闭，默认关闭
@@ -41,8 +42,8 @@ black_list = [tuple([x.replace(' ', '') for x in i.split('/')]) for i in black_l
 pass_list = [tuple([x.replace(' ', '') for x in i.split('/')]) for i in pass_list.split('\n') if i]
 app = Flask(__name__)
 CHUNK_SIZE = 1024 * 10
-index_html = requests.get(ASSET_URL, timeout=10).text
-icon_r = requests.get(ASSET_URL + '/favicon.ico', timeout=10).content
+index_html = safe_requests.get(ASSET_URL, timeout=10).text
+icon_r = safe_requests.get(ASSET_URL + '/favicon.ico', timeout=10).content
 exp1 = re.compile(r'^(?:https?://)?github\.com/(?P<author>.+?)/(?P<repo>.+?)/(?:releases|archive)/.*$')
 exp2 = re.compile(r'^(?:https?://)?github\.com/(?P<author>.+?)/(?P<repo>.+?)/(?:blob|raw)/.*$')
 exp3 = re.compile(r'^(?:https?://)?github\.com/(?P<author>.+?)/(?P<repo>.+?)/(?:info|git-).*$')
